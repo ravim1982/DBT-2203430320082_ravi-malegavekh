@@ -1,0 +1,106 @@
+use exam;
+create table dept(
+deptno varchar(10),
+dname varchar(15),
+loc varchar(10)
+);
+create table emp(
+empno varchar(10),
+ename varchar(10),
+job varchar(9),
+hiredate date,
+sal float(7,2),
+comm float(7,2),
+deptno varchar(5)
+);
+
+insert into emp 
+values('7839','king','manager','1991-11-17',5000,null,'10'),
+('7698','blake','clerl','1981-05-01',2850,null,'30'),
+('7782','clark','manager','1981-06-09',2450,null,'10'),
+('7566','jones','clerk','1981-04-02',2950,null,'20'),
+('7654','martin','salesman','1981-09-28',1250,1400,'30'),
+('7499','allens','salesman','1981-02-20',1600,300,'30');
+
+insert into dept 
+values ('10','accounting','new york'),
+('20','research','dallas'),
+('10','sales','chicago'),
+('10','operations','boston');
+
+select sal from emp 
+where sal between 2500 and 5000;
+
+select ename from emp
+order by ename desc;
+
+select lower(job) from emp;
+
+select ename,length(ename) from emp;
+
+select deptno,count(deptno) from emp
+group by deptno;
+/* Display the DNAMEs and the ENAMEs who belong to that DNAME.
+9. Display the position at which the string ‘AR’ occurs in the ename.
+10. Display the HRA for each employee given that HRA is 20% of SAL */
+
+select deptno,dname from dept;
+select instr(ename,'ar')from emp;
+select ename,sal*0.2 as hra from emp;
+
+**********************************************************
+Q.2)
+delimiter //
+create procedure proc1(x varchar(20),y varchar(20))
+
+begin
+  declare a varchar(20);
+  if instr(x,y) then
+  insert into temp values('yes','containts');
+  else
+  insert into temp values('not','containt');
+  end if;
+  end; //
+  delimiter ;
+       
+call proc1('cdac','dac');
+drop procedure proc1;
+select * from temp;
+
+
+************************************************************
+Q.3)
+ delimiter //
+ create function func1(x varchar(20),y varchar(20),z varchar(20))
+ returns boolean
+ deterministic
+ begin
+       
+        if x+y>z and y+z>x and z+x>y  then
+        return true;
+        else
+        return false;
+        end if;
+  end; //
+  delimiter ;
+       
+delimiter //
+create procedure test()
+begin
+ 
+  if func1('20','40','60') then
+  insert into temp values('valid','triangle');
+  else
+  insert into temp values('not valid','triangle');
+  end if;
+  end; //
+  delimiter ;
+call test();
+drop procedure test;
+drop function func1;
+select * from temp;
+
+delete from temp;
+
+
+
